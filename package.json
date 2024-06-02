@@ -4,7 +4,9 @@
   "description": "purpose of this folder to store project records",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "shah misbahul islam",
   "license": "ISC",
