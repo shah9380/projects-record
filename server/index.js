@@ -23,7 +23,11 @@ app.use(bodyParser.json())
 
 connectDB()
 
-app.use("/",userRouter)
+app.get("/",(req, res)=>{
+    res.json("Hello")
+})
+
+app.use("/api",userRouter)
 
 // Static files from React
 app.use(express.static(path.join(__dirname, "../client/build")));

@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom"
 const Header = (props)=>{
     const navigate = useNavigate()
     const logout = async ()=>{
-            await axios.get('http://localhost:10000/logout')
+            await axios.get('http://localhost:10000/api/logout')
             navigate('/login')
     }
     const checkUsers = async ()=>{
         try {
-           const response = await axios.get('http://localhost:10000/users')
+           const response = await axios.get('http://localhost:10000/api/users')
            console.log(response.data);
            props.getUsers(response.data);
         } catch (error) {
