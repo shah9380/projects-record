@@ -36,7 +36,7 @@ const SignUp = ()=>{
     var [ErrMessage, setErrMessage] = useState('Error Found')
     const handleSubmit = async (values, {setSubmitting})=>{
         try {
-            await axios.post('https://projects-record.onrender.com/api/register',values).then((data)=>{
+            await axios.post('https://familyman.onrender.com/api/register',values).then((data)=>{
                 console.log(data)
             });
             alert('Registration Successfull', values)

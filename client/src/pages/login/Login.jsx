@@ -18,7 +18,7 @@ const Login = ()=>{
     const navigate = useNavigate();
     const handleSubmit = async (values, {setSubmitting})=>{
         try {
-            await axios.post('https://projects-record.onrender.com/api/login', values)
+            await axios.post('https://familyman.onrender.com/api/login', values)
             console.log('Login Successfull')
             navigate("/home")
         } catch (error) {
