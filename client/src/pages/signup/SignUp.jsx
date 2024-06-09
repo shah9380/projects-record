@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import './Signup.css'; 
+import axios from 'axios';
 
 const SignUpSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -31,6 +32,21 @@ const SignUpSchema = Yup.object().shape({
 })
 
 const SignUp = ()=>{
+
+    var [ErrMessage, setErrMessage] = useState('Error Found')
+    const handleSubmit = async (values, {setSubmitting})=>{
+        try {
+            await axios.post('http://localhost:10000/register',values).then((data)=>{
+                console.log(data)
+            });
+            alert('Registration Successfull', values)
+        } catch (error) {
+            const errorMessage = error.response.data.message.replace(/^Error: /, "");
+            alert(`Registration Failed \n${errorMessage}`)
+        }finally{
+            setSubmitting(false)
+        }
+    }
     return(
         <div className="signup-container">
             <h1>Registration</h1>
@@ -44,9 +60,7 @@ const SignUp = ()=>{
                     mobile: '',
                 }}
                 validationSchema={SignUpSchema}
-                onSubmit={values => {
-                    console.log(values)
-                }}
+                onSubmit={handleSubmit}
             >
                 {
                     ({isSubmitting}) => {
@@ -83,7 +97,7 @@ const SignUp = ()=>{
                                     <Field type="password" name="confirmPassword" id="confirmPassword" aria-required="true" />
                                     <ErrorMessage name="confirmPassword" component="div" role="alert" />
                                 </div>
-                                <button type="submit" disabled={isSubmitting}>Take Me In</button>
+                                <button type="submit" disabled={isSubmitting} aria-live="polite">Take Me In</button>
                             </fieldset>
                         </Form>)
                     }
