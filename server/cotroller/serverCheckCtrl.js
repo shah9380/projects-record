@@ -1,5 +1,9 @@
+const path = require('path');
+
 const serverCheck = (req, res)=>{
     try {
+        res.sendFile("http://localhost:3000/"); // Ensure the path is correct
+        console.log(path.join(__dirname, 'index.html'))
         res.status(200).send({
             message: "Awesome! Server is Cool",
             status: true,

@@ -3,6 +3,8 @@ const cors = require("cors")
 const bodyParser = require("body-parser")
 const dotenv = require("dotenv").config()
 const cookieParser =  require("cookie-parser")
+const path = require("path");
+
 
 const {connectDB} = require("./config/dbConnection.js")
 const userRouter = require("./router/userRouter.js")
@@ -22,6 +24,33 @@ app.use(bodyParser.json())
 connectDB()
 
 app.use("/",userRouter)
+
+// Static files from React
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+// Custom serverCheck route
+const serverCheck = (req, res) => {
+    try {
+        // res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+        // console.log(path.join(__dirname, "../client/build", "index.html"));
+        res.status(200).send({
+            message: "Awesome! Server is Cool",
+            status: true,
+        });
+    } catch (error) {
+        res.status(502).send({
+            message: "Unable to connect server at the moment",
+            status: false,
+        });
+    }
+};
+
+app.get("/server-check", serverCheck);
+
+// Serve React app for all other routes
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
 
 app.use(notFound,errorhandler);
 

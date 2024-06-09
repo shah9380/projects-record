@@ -24,9 +24,27 @@ const authMiddleWare = expressAsyncHandler(
     }
 )
 
+const checkLoggedIn = expressAsyncHandler(
+    async (req, res, next)=>{
+        try {
+         const refreshToken =  req?.cookies?.refreshToken
+         if(!refreshToken){
+            throw new Error("Not an authorized user")
+         }
+         const foundUser = await User.findOne({refreshToken});
+         if(foundUser){
+            req.user = foundUser;
+         }
+         next();
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+)
+
 const isAdmin = expressAsyncHandler(
     async (req, res, next)=>{
-        const {email} = req.user;
+        const {email} = req?.user;
         const user = await User.findOne({email})
     
         if(!user){
@@ -39,4 +57,4 @@ const isAdmin = expressAsyncHandler(
     }
 )
 
-module.exports = {isAdmin, authMiddleWare}
+module.exports = {isAdmin, authMiddleWare, checkLoggedIn}

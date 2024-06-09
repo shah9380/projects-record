@@ -45,6 +45,7 @@ const login = expressAsyncHandler(
                     httpOnly: true,
                     maxAge: 3* 24 * 60 * 60 * 1000  //for 3 days
                 })
+                req.cookies = res.cookie;
                 res.status(200).json({
                     status: true,
                     message: "login successfull",
@@ -60,31 +61,42 @@ const login = expressAsyncHandler(
 )
 
 const logOut = expressAsyncHandler(
-    async (req, res)=>{
-        const {email} = req.user;
-        res.clearCookie("refreshToken")
-      const user = await User.findOneAndUpdate({email},{
-        refreshToken: ""
-      },{
-        new: true
-      })
-      if(user){
-        res.status(200).json({
-            status: true,
-            user,
-            message: "logged out"
-        })
-      }
-    }
+        async (req, res)=>{
+            try {
+                const refreshToken = req?.cookies?.refreshToken;
+                res.clearCookie("refreshToken")
+                if(refreshToken){
+                    const user = await User.findOneAndUpdate({refreshToken},{
+                        refreshToken: ""
+                    },{
+                        new: true
+                    })
+                    if(user){
+                        res.status(200).json({
+                            status: true,
+                            user,
+                            message: "logged out"
+                        })
+                    }
+                }else{
+                    res.status(200).json({
+                        status: false,
+                        message: "already logged out"
+                    })
+                }
+            } catch (error) {
+                throw new Error(error)
+            }
+            
+        }
 )
+
 
 const getAllUsers = expressAsyncHandler(
     async (req, res)=>{
         try {
             const users = await User.find()
-            res.status(200).json({
-                users
-            })
+            res.status(200).json(users)
         } catch (error) {
             throw new Error(error)
         }
@@ -114,4 +126,11 @@ const deleteUser = expressAsyncHandler(
     }
 )
 
-module.exports = {userRegister, deleteUser, getAllUsers, login, logOut}
+const checkCookies = expressAsyncHandler(
+    async (req, res)=>{
+        const cookies = req.cookies;
+        res.status(200).json(cookies)
+    }
+)
+
+module.exports = {userRegister, deleteUser, getAllUsers, login, logOut, checkCookies}
