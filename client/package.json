@@ -9,6 +9,7 @@
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "formik": "^2.4.6",
+    "projects-record": "file:..",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
