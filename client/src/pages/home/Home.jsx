@@ -5,10 +5,15 @@ import axios from "axios";
 const Home = ()=>{
     const[user, setUser] = useState([]);
     const[tradingData, setTradingData] = useState([]);
+    const [files, setFiles] = useState([]);
     const getUsers = (users)=>{
         setUser(prev => [...users])
         console.log("userjksvmf", users)
     }
+    const handleFileChange = (event) => {
+        const selectedFiles = Array.from(event.target.files);
+        setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
+    };
     const getTradeData = async ()=>{
         try {
            const response = await axios.get('https://familyman.onrender.com/api/trading/info')
@@ -18,8 +23,21 @@ const Home = ()=>{
             console.log(error)
         }
     }
-    const handleSubmit = (event) =>{
-        event.target.preventDefault();
+    const handleSubmit = async (event) =>{
+        event.preventDefault();
+        files.forEach(async (fileUpload, index) => {
+            const formData = new FormData();
+            formData.append('file', fileUpload.file);
+      
+            try {
+              await axios.post('https://familyman.onrender.com/api/uploadExcel/tradingData', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+              });
+            } catch (error) {
+              console.log(error)
+            }
+        });  
+
     }
 
     return(
@@ -38,9 +56,9 @@ const Home = ()=>{
                     )
                 })
             }
-            <h1>Upload Excel File</h1>
-            <form onSubmit={handleSubmit} action="https://familyman.onrender.com/api/uploadExcel/tradingData" method="post" enctype="multipart/form-data">
-                <input type="file" name="excelFile" accept=".xlsx,.xls" />
+            <form onSubmit={handleSubmit}>
+                <h1>Upload Excel File</h1>
+                <input type="file" onChange={handleFileChange} multiple accept=".xlsx,.xls" ref={input => input && input.click()} />
                 <button type="submit">Upload</button>
             </form>
             <button onClick={getTradeData}>Trade Data</button>
