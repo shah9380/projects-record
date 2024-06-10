@@ -23,9 +23,9 @@ app.use(bodyParser.json())
 
 connectDB()
 
-app.get("/",(req, res)=>{
+/* app.get("/",(req, res)=>{
     res.json("Hello")
-})
+}) **/
 
 app.use("/api",userRouter)
 
