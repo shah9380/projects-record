@@ -18,6 +18,9 @@ const Home = ()=>{
             console.log(error)
         }
     }
+    const handleSubmit = (event) =>{
+        event.target.preventDefault();
+    }
 
     return(
         <div>
@@ -36,7 +39,7 @@ const Home = ()=>{
                 })
             }
             <h1>Upload Excel File</h1>
-            <form action="https://familyman.onrender.com/api/uploadExcel/tradingData" method="post" enctype="multipart/form-data">
+            <form onSubmit={handleSubmit} action="https://familyman.onrender.com/api/uploadExcel/tradingData" method="post" enctype="multipart/form-data">
                 <input type="file" name="excelFile" accept=".xlsx,.xls" />
                 <button type="submit">Upload</button>
             </form>
