@@ -6,14 +6,14 @@ const Home = ()=>{
     const[user, setUser] = useState([]);
     const[tradingData, setTradingData] = useState([]);
     const getUsers = (users)=>{
-        setUser(prev => [...prev, ...users])
+        setUser(prev => [...users])
         console.log("userjksvmf", users)
     }
     const getTradeData = async ()=>{
         try {
-           const response = await axios.get('https://familyman.onrender.com/api/users')
+           const response = await axios.get('https://familyman.onrender.com/api/trading/info')
            const data = response.data
-           setTradingData(prev => [...prev, ...data] )
+           setTradingData(prev => [...data])
         } catch (error) {
             console.log(error)
         }

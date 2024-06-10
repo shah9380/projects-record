@@ -31,7 +31,6 @@ app.use(bodyParser.json())
 
 connectDB()
 
-<<<<<<< HEAD
 // API endpoint for uploading Excel file
 app.post('/api/uploadExcel/tradingData', upload.single('excelFile'), async (req, res) => {
     try {
@@ -70,11 +69,9 @@ app.post('/api/uploadExcel/tradingData', upload.single('excelFile'), async (req,
         res.status(500).send('Internal Server Error');
     }
 });
-=======
 /* app.get("/",(req, res)=>{
     res.json("Hello")
 }) **/
->>>>>>> 187d3871f7f8099112fbd5b7bbb57e04220c5e8d
 
 app.use("/api",userRouter)
 app.use("/api/trading",tradingRouter)
