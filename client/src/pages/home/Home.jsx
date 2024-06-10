@@ -5,14 +5,15 @@ import axios from "axios";
 const Home = ()=>{
     const[user, setUser] = useState([]);
     const[tradingData, setTradingData] = useState([]);
-    const [selectedFile, setFiles] = useState(File);
+    const [selectedFile, setFiles] = useState([]);
     const getUsers = (users)=>{
         setUser(prev => [...users])
         console.log("userjksvmf", users)
     }
     const handleFileChange = (event) => {
-        setFiles(event.target.file)
-        // setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
+        console.log(event)
+       const selectedFiles = event.target.files
+        setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
     };
     const getTradeData = async ()=>{
         try {
@@ -25,9 +26,10 @@ const Home = ()=>{
     }
     const handleSubmit = async (event) =>{
         event.preventDefault();
-        // files.forEach(async (fileUpload, index) => {
+        selectedFile.forEach(async (fileUpload, index) => {
             const formData = new FormData();
-            formData.append('file', selectedFile);
+            console.log(fileUpload,"upload")
+            formData.append('file', fileUpload);
       
             try {
               await axios.post('https://familyman.onrender.com/api/uploadExcel/tradingData', formData, {
@@ -36,7 +38,7 @@ const Home = ()=>{
             } catch (error) {
               console.log(error)
             }
-        // });  
+        });  
 
     }
 
@@ -58,7 +60,7 @@ const Home = ()=>{
             }
             <form onSubmit={handleSubmit}>
                 <h1>Upload Excel File</h1>
-                <input type="file" onChange={handleFileChange} accept=".xlsx,.xls" ref={input => input && input.click()} />
+                <input type="file" onChange={handleFileChange} name="excelFile" accept=".xlsx,.xls" ref={input => input && input.click()} />
                 <button type="submit">Upload</button>
             </form>
             <button onClick={getTradeData}>Trade Data</button>
