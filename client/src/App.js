@@ -10,6 +10,7 @@ function App() {
   return (
     <BrowserRouter>
         <Routes>
+            <Route path='/' Component={Login} />
             <Route exact path='/register' Component={SignUp} />
             <Route path='/login' Component={Login} />
             <Route path='/home' Component={Home}/>
