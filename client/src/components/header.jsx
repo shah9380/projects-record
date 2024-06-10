@@ -17,6 +17,7 @@ const Header = (props)=>{
             console.log(error)
         }
     }
+    
     return(
         <header>
             <button type="buttone" onClick={logout}>Log Out</button>
