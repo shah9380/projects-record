@@ -29,7 +29,7 @@ const Home = ()=>{
         selectedFile.forEach(async (fileUpload, index) => {
             const formData = new FormData();
             console.log(fileUpload,"upload")
-            formData.append('file', fileUpload);
+            formData.append('excelFile', fileUpload);
       
             try {
               await axios.post('https://familyman.onrender.com/api/uploadExcel/tradingData', formData, {
